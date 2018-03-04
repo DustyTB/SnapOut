@@ -1,3 +1,0 @@
-D:\RW_Mods\CalmDown\Assemblies\Calm_Down!.dll
-D:\RW_Mods\CalmDown\Source\obj\Debug\Calm_Down!.csproj.CoreCompileInputs.cache
-D:\RW_Mods\CalmDown\Source\obj\Debug\Calm_Down!.dll
