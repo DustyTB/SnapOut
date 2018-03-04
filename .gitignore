@@ -1,6 +1,6 @@
 .vs
 *.cache
 Source/obj
-/Assemblies/CalmDown!.dll
+/Assemblies/Calm_Down!.dll
 /About/About.xml
 *.csproj.user
