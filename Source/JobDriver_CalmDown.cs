@@ -14,6 +14,7 @@ namespace Calm_Down
         //Our variables b here
         #region vars
         protected bool messageEnabled = CDMod.settings.CDmessagesEnabled;
+        protected bool opnOnlyEnabled = CDMod.settings.CDOpnOnly;
         string[] calmingmessages = new string[]
                 {
                     "It will be all fine.",
@@ -45,7 +46,8 @@ namespace Calm_Down
         private const int CalmDuration = 1250; 
         //Formula weight variables. Thanks Mehni and XeoNovaDan, you guys are epic!
         private const float DiplomacyWeight = 0.2f; 
-        private const float OpinionWeight = 0.0014f; 
+        private const float OpinionWeight = 0.0014f;
+        private const float OOpinionWeight = 0.006f;
         private const TargetIndex pieceofshit = TargetIndex.A; 
         Job recoverjob = new Job(CalmDefOf.SnappingOut);
         #endregion
@@ -67,11 +69,14 @@ namespace Calm_Down
                     float num = pawn.GetStatValue(StatDefOf.DiplomacyPower, true); 
                     int opinion = pieceofs.relations.OpinionOf(pawn); 
                     num = num * DiplomacyWeight + (float)opinion * OpinionWeight; //Formula
+                    if (opnOnlyEnabled)
+                    {
+                        num = (float)opinion * OOpinionWeight;
+                    }
                     num = Mathf.Clamp01(num); 
                     string debugNum = num.ToString();
                     string debugRand = rand.ToString();
-                    Log.Message(debugNum);
-                    Log.Message(debugRand);
+                    Log.Message("chance " + debugNum + " |rand " + debugRand);
                     if (rand > num) 
                     {
                         #region failcondition
