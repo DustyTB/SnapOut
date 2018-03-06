@@ -6,6 +6,8 @@
   <AggroFailCalm>{0} is being attacked after failing to calm {1} down</AggroFailCalm>
   <SettingsCategoryLabel>Snap Out!</SettingsCategoryLabel>
   <MessagesEnabledLabel>Enable character messages</MessagesEnabledLabel>
-  <AggroCalmEnabledLabel>Enable calming of aggessive pawns</AggroCalmEnabledLabel>
+  <AggroCalmEnabledLabel>Enable calming of aggressive pawns</AggroCalmEnabledLabel>
+  <OpinionOnlyEnabledLabel>Only opinion matters</OpinionOnlyEnabledLabel>
+  <NonFactionEnabledLabel>Enable calming prisoners</NonFactionEnabledLabel>
   
 </LanguageData>
