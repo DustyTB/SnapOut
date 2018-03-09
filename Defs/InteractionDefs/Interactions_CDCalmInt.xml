@@ -3,7 +3,6 @@
   <InteractionDef>
     <defName>CDCalmDownInt</defName>
     <label>calm down</label>
-    <workerClass>InteractionWorker_ChitChat</workerClass>
     <symbol>Things/Mote/SpeechSymbols/DeepTalk</symbol>
 	<initiatorXpGainSkill>Social</initiatorXpGainSkill>
     <initiatorXpGainAmount>30</initiatorXpGainAmount>

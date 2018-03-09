@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CalmDefOf.cs" />
+    <Compile Include="CalmUtils.cs" />
     <Compile Include="ModSettings.cs" />
     <Compile Include="JobDriver_CalmDown.cs" />
     <Compile Include="JobDriver_SnappingOut.cs" />

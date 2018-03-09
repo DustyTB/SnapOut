@@ -13,8 +13,6 @@ namespace Calm_Down
 
         //Our variables b here
         #region vars
-        protected bool messageEnabled = CDMod.settings.CDmessagesEnabled;
-        protected bool opnOnlyEnabled = CDMod.settings.CDOpnOnly;
         string[] calmingmessages = new string[]
                 {
                     "It will be all fine.",
@@ -39,15 +37,7 @@ namespace Calm_Down
                     "You can vent to me, I'll listen.",
                     "We have a great recreation room, how about we play some chess together?"
                 };
-        //Translations for the success/failure messages
-        private static readonly string FCalm = "FailCalm".Translate();
-        private static readonly string SCalm = "SuccessCalm".Translate();
-        private static readonly string AFCalm = "AggroFailCalm".Translate();
-        private const int CalmDuration = 1250; 
         //Formula weight variables. Thanks Mehni and XeoNovaDan, you guys are epic!
-        private const float DiplomacyWeight = 0.2f; 
-        private const float OpinionWeight = 0.0014f;
-        private const float OOpinionWeight = 0.006f;
         private const TargetIndex pieceofshit = TargetIndex.A; 
         Job recoverjob = new Job(CalmDefOf.SnappingOut);
         #endregion
@@ -55,75 +45,57 @@ namespace Calm_Down
 
         //Our main toil that does the calculations and stuff like that
         #region MainToil
-        protected Toil CalmDown(TargetIndex CTrg, int dur) 
+        protected Toil CalmDown(TargetIndex CTrg, int dur)
         {
-            Pawn pieceofs = (Pawn)this.pawn.CurJob.targetA.Thing; 
+            Pawn pieceofs = (Pawn)this.pawn.CurJob.targetA.Thing;
             var toil = new Toil
             {
                 initAction = () =>
                 {
-                    pieceofs.jobs.EndCurrentJob(JobCondition.InterruptForced); 
+                    pieceofs.jobs.EndCurrentJob(JobCondition.InterruptForced);
                     this.TargetThingB = this.pawn; //Defining our initiator pawn
-                    float rand = UnityEngine.Random.Range(0f, 0.70f); 
-                    pawn.interactions.TryInteractWith(pieceofs, CalmDefOf.CalmDownInt); 
-                    float num = pawn.GetStatValue(StatDefOf.DiplomacyPower, true); 
-                    int opinion = pieceofs.relations.OpinionOf(pawn); 
-                    num = num * DiplomacyWeight + (float)opinion * OpinionWeight; //Formula
-                    if (opnOnlyEnabled)
-                    {
-                        num = (float)opinion * OOpinionWeight;
-                    }
-                    num = Mathf.Clamp01(num); 
-                    string debugNum = num.ToString();
-                    string debugRand = rand.ToString();
-                    Log.Message("chance " + debugNum + " |rand " + debugRand);
-                    if (rand > num) 
+                    float rand = UnityEngine.Random.Range(0f, 0.70f);
+                    pawn.interactions.TryInteractWith(pieceofs, CalmDefOf.CalmDownInt);
+                    float num = CalmUtils.doFormula(pawn, pieceofs);
+                    CalmUtils.logThis("Calm chance was " + num.ToString() + " versus random of " + rand.ToString());
+                    if (rand > num)
                     {
                         #region failcondition
-                        if (messageEnabled) 
+                        if (CDMod.settings.CDmessagesEnabled)
                         {
                             MoteMaker.ThrowText(this.pawn.DrawPos + this.pawn.Drawer.renderer.BaseHeadOffsetAt(this.pawn.Rotation), this.pawn.Map, calmingmessages.RandomElement<string>(), Color.red, 3.85f);
                         }
-                        if (pieceofs.InAggroMentalState) 
+                        if (pieceofs.InAggroMentalState)
                         {
                             pieceofs.TryStartAttack(pawn);
-                            Messages.Message(string.Format(JobDriver_CalmDown.AFCalm, new object[]
-                                    {
-                                    pawn.NameStringShort,
-                                    pieceofs.NameStringShort,
-                                    }), MessageTypeDefOf.TaskCompletion);
-                            pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame; 
+                            CalmUtils.doStatusMessage(3, pawn, pieceofs);
+                            pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;
                             return;
 
                         }
-                        
-                        Messages.Message(string.Format(JobDriver_CalmDown.FCalm, new object[]
-                                {
-                                    pawn.NameStringShort,
-                                    pieceofs.NameStringShort,
-                                }), MessageTypeDefOf.TaskCompletion);
-                        pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame; 
+
+                        CalmUtils.doStatusMessage(2, pawn, pieceofs);
+                        pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;
                         return;
                         #endregion
                     }
-                        #region successcondition
-                    if (messageEnabled) 
+                    #region successcondition
+                    if (CDMod.settings.CDmessagesEnabled)
                     {
                         MoteMaker.ThrowText(this.pawn.DrawPos + this.pawn.Drawer.renderer.BaseHeadOffsetAt(this.pawn.Rotation), this.pawn.Map, calmingmessages.RandomElement<string>(), Color.green, 3.85f);
                     }
                     pawn.needs.mood.thoughts.memories.TryGainMemory(CalmDefOf.CDGaveCareThought, null);
-                    Messages.Message(string.Format(JobDriver_CalmDown.SCalm, new object[]
-                    {
-                                    pawn.NameStringShort,
-                                    pieceofs.NameStringShort,
-                    }), MessageTypeDefOf.TaskCompletion);
+                    CalmUtils.doStatusMessage(1, pawn, pieceofs);
+                    if (pieceofs.InAggroMentalState) { pieceofs.MentalState.RecoverFromState(); pieceofs.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.WanderSad); }
+                    pieceofs.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                    recoverjob.playerForced = true;               
                     pieceofs.jobs.StartJob(recoverjob);
                     pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;
                     #endregion
                 },
                 socialMode = RandomSocialMode.Off,
                 defaultCompleteMode = ToilCompleteMode.Instant,
-                defaultDuration = CalmDuration
+                defaultDuration = CDMod.settings.CDCalmDuration
             };
             return toil.WithProgressBarToilDelay(TargetIndex.B);
         }
@@ -143,17 +115,42 @@ namespace Calm_Down
         #region toilstuffs
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            var cdown = CalmDown(pieceofshit, CalmDuration);
+            Pawn pieceofs = (Pawn)this.pawn.CurJob.targetA.Thing;
+            var cdown = CalmDown(pieceofshit, CDMod.settings.CDCalmDuration);
             
+
             this.FailOnDowned(pieceofshit);
             this.FailOnDespawnedOrNull(pieceofshit);
             this.FailOnNotAwake(pieceofshit);
 
-
+            
             yield return Toils_Goto.GotoThing(pieceofshit, PathEndMode.Touch);
             yield return Toils_Interpersonal.WaitToBeAbleToInteract(this.pawn);
             yield return Toils_Interpersonal.GotoInteractablePosition(pieceofshit);
-            yield return Toils_General.WaitWith(pieceofshit, CalmDuration, true, true);
+            yield return Toils_General.Do(delegate
+            {
+                             
+                
+                pieceofs.rotationTracker.FaceCell(pawn.PositionHeld);
+                if (pieceofs.InAggroMentalState)
+                {
+                    
+                    float randa = UnityEngine.Random.Range(0f, 0.85f);
+                    float numba = pawn.GetStatValue(StatDefOf.DiplomacyPower, true);
+                    numba = numba * CDMod.settings.CDStunWeight;
+                    CalmUtils.logThis("Aggressive stun chance was " + numba.ToString() + " versus random of " + randa.ToString());
+                    if (randa > numba)
+                    {
+                        CalmUtils.doStatusMessage(3, pawn, pieceofs);    
+                        pieceofs.TryStartAttack(pawn);
+                        pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;
+                        EndJobWith(JobCondition.Incompletable);
+                    }
+                    if (numba > randa) pieceofs.stances.stunner.StunFor(CDMod.settings.CDCalmDuration);       
+               }   
+            });
+            yield return Toils_Interpersonal.GotoInteractablePosition(pieceofshit);
+            yield return Toils_General.WaitWith(pieceofshit, CDMod.settings.CDCalmDuration, true, true);
             yield return cdown;
             yield return Toils_Interpersonal.SetLastInteractTime(pieceofshit);
 

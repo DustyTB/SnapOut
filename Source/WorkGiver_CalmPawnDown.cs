@@ -24,17 +24,16 @@ namespace Calm_Down
             Pawn pawn2 = (Pawn)thang;
             if (pawn2.RaceProps.Humanlike)
             {
-                bool ShouldDoFac = (pawn2.IsPrisonerOfColony == CDMod.settings.CDNonFaction);
-                if (pawn2.Faction == Faction.OfPlayer) ShouldDoFac = true;
-
-                bool ShouldDoAgg = (pawn2.InAggroMentalState == CDMod.settings.CDAggroCalmEnabled);
-                if (!pawn2.InAggroMentalState) ShouldDoAgg = true;
-
-
-                bool recent = Find.TickManager.TicksGame < pawn2.mindState.lastAssignedInteractTime + 15000;
-                if (pawn2.InMentalState && ShouldDoFac && ShouldDoAgg && pawn.health.capacities.CapableOf(PawnCapacityDefOf.Talking) && !recent && pawn2.RaceProps.Humanlike && pawn.CanReserve(pawn2)) //Only on non-aggressive mental state pawns
+                if (pawn2.InMentalState) 
                 {
-                    return new Job(CalmDefOf.CalmDown, pawn2);
+                    CalmUtils.logThis(pawn2.NameStringShort + " has met HumanLike and InMentalState conditions.");
+                    bool recent = Find.TickManager.TicksGame < pawn2.mindState.lastAssignedInteractTime + 15000;
+                    if (CalmUtils.canDo(pawn2) && CalmUtils.IsCapableOf(pawn) && !recent && pawn.CanReserve(pawn2)) //Only on non-aggressive mental state pawns
+                    {
+                        CalmUtils.logThis("Calming job initiated on " + pawn2.NameStringShort + " by " + pawn.NameStringShort);
+                        return new Job(CalmDefOf.CalmDown, pawn2);
+                    }
+                    return null;
                 }
                 return null;
             }

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<LanguageData>
+ 
+  <FailCalm>{0} hat es nicht geschafft {1} zu beruhigen.</FailCalm>
+  <SuccessCalm>{1} wurde von {0} beruhigt.</SuccessCalm>
+  <AggroFailCalm>{0} wird angegriffen nach versuchtem beruhigen von {1}</AggroFailCalm>
+  <SettingsCategoryLabel>Snap Out!</SettingsCategoryLabel>
+  <MessagesEnabledLabel>Aktiviere Charakterbenachichtigung</MessagesEnabledLabel>
+  <AggroCalmEnabledLabel>Aktiviere Beruhigung von agressiven Leute</AggroCalmEnabledLabel>
+  <OpinionOnlyEnabledLabel>Nur Ansicht ist wichtig</OpinionOnlyEnabledLabel>
+  <NonFactionEnabledLabel>Aktiviere Gefangenenberuhigung</NonFactionEnabledLabel>
+  <TraderCalmEnabledLabel>Aktivieren Sie beruhigende Händler</TraderCalmEnabledLabel>
+  <AdvancedMenu>Erweiterte Optionen</AdvancedMenu>
+  <SMultLabel>Diplomatie-Multiplikator</SMultLabel>
+  <OMultLabel>Meinung Multiplikator</OMultLabel>
+  <OOMultLabel>Meinung nur Multiplikator</OOMultLabel>
+  <StunWeight>Aggressiver Betäubungsmultiplikator</StunWeight>
+  <CalmDuration>Dauer</CalmDuration>
+  <DebugChanceSetting>Debug-Ausgabe</DebugChanceSetting>
+  <NoCathEnabledLabel>Katharsis deaktivieren</NoCathEnabledLabel>
+  <Cooldown>Abklingzeit bei fehlgeschlagenem Versuch (ticks) </Cooldown>
+  
+</LanguageData>
