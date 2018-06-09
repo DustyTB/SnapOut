@@ -24,16 +24,15 @@ namespace  Calm_Down
         {
             Pawn rpawn = this.pawn;
             this.TargetThingB = this.pawn;
-            IntVec3 c = RCellFinder.RandomWanderDestFor(rpawn, rpawn.Position, 5f, null, Danger.Unspecified);
+            IntVec3 c = RCellFinder.RandomWanderDestFor(rpawn, rpawn.Position, 2f, null, Danger.None);
             yield return Toils_Goto.GotoCell(c, PathEndMode.OnCell);       
             Toil waitonspot = Toils_General.Wait(500);
             waitonspot.socialMode = RandomSocialMode.Off;
             yield return waitonspot;
             Toil snappingout = Toils_General.Do(delegate
             {
-                CalmUtils.logThis("RCVR");
                 rpawn.MentalState.RecoverFromState();
-                CalmUtils.logThis("NOCATH");
+                CalmUtils.logThis("Removed recovery thought from " + rpawn.NameStringShort);
                 if (CDMod.settings.CDNoCath) rpawn.needs.mood.thoughts.memories.RemoveMemoriesOfDef(rpawn.MentalState.def.moodRecoveryThought);
                 CalmUtils.logThis(rpawn.NameStringShort + " snapped out and finished job");
                 rpawn.jobs.EndCurrentJob(JobCondition.Succeeded);
