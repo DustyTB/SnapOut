@@ -24,9 +24,18 @@ namespace  Calm_Down
         {
             Pawn rpawn = this.pawn;
             this.TargetThingB = this.pawn;
-            IntVec3 c = RCellFinder.RandomWanderDestFor(rpawn, rpawn.Position, 2f, null, Danger.None);
-            yield return Toils_Goto.GotoCell(c, PathEndMode.OnCell);       
+            Building ownedbed = this.pawn.ownership.OwnedBed;
+            if (ownedbed != null)
+            {
+                yield return Toils_Goto.GotoCell(ownedbed.Position, PathEndMode.OnCell);
+            }
+            else
+            {
+                IntVec3 c = RCellFinder.RandomWanderDestFor(rpawn, rpawn.Position, 2f, null, Danger.None);
+                yield return Toils_Goto.GotoCell(c, PathEndMode.OnCell);
+            }               
             Toil waitonspot = Toils_General.Wait(500);
+            
             waitonspot.socialMode = RandomSocialMode.Off;
             yield return waitonspot;
             Toil snappingout = Toils_General.Do(delegate
