@@ -99,5 +99,16 @@ namespace Calm_Down
                     break;
             }
         }
+
+        public static string GetCalmingMessage
+        {
+            get
+            {
+                int rand = UnityEngine.Random.Range(1, 21);
+                string cmrand = "CM" + rand;
+                logThis("Picked " + cmrand + " as a calming message");
+                return cmrand.Translate();
+            }
+        }
     }
 }

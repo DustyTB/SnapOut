@@ -13,30 +13,6 @@ namespace Calm_Down
 
         //Our variables b here
         #region vars
-        string[] calmingmessages = new string[]
-                {
-                    "It will be all fine.",
-                    "Don't worry, Ive got your back.",
-                    "Just hold on with me, Ill be with you all the way.",
-                    "Its just a table, we will be fine.",
-                    "We will be with you.",
-                    "I'm here for you, tell me whats bothering you - I'm listening.",
-                    "We can solve this together.",
-                    "Take deep breaths, you can do it. Relax..",
-                    "I know what you're going through, I'd really like to help.. ",
-                    "What are you worried about?",
-                    "Not this again, come on..",
-                    "Tell me your concerns.",
-                    "This too will pass.",
-                    "It's like a storm, It's just temporary.",
-                    "Lets solve this together.",
-                    "You're safe, I'm here for you.",
-                    "I'm sorry you're going through that.",
-                    "You're not on your own, we are all here for you.",
-                    "It's not your fault.",
-                    "You can vent to me, I'll listen.",
-                    "We have a great recreation room, how about we play some chess together?"
-                };
         //Formula weight variables. Thanks Mehni and XeoNovaDan, you guys are epic!
         private const TargetIndex pieceofshit = TargetIndex.A; 
         Job recoverjob = new Job(CalmDefOf.SnappingOut);
@@ -63,7 +39,7 @@ namespace Calm_Down
                         #region failcondition
                         if (CDMod.settings.CDmessagesEnabled)
                         {
-                            MoteMaker.ThrowText(this.pawn.DrawPos + this.pawn.Drawer.renderer.BaseHeadOffsetAt(this.pawn.Rotation), this.pawn.Map, calmingmessages.RandomElement<string>(), Color.red, 3.85f);
+                            MoteMaker.ThrowText(this.pawn.DrawPos + this.pawn.Drawer.renderer.BaseHeadOffsetAt(this.pawn.Rotation), this.pawn.Map, CalmUtils.GetCalmingMessage, Color.red, 3.85f);
                         }
                         if (pieceofs.InAggroMentalState)
                         {
@@ -82,7 +58,7 @@ namespace Calm_Down
                     #region successcondition
                     if (CDMod.settings.CDmessagesEnabled)
                     {
-                        MoteMaker.ThrowText(this.pawn.DrawPos + this.pawn.Drawer.renderer.BaseHeadOffsetAt(this.pawn.Rotation), this.pawn.Map, calmingmessages.RandomElement<string>(), Color.green, 3.85f);
+                        MoteMaker.ThrowText(this.pawn.DrawPos + this.pawn.Drawer.renderer.BaseHeadOffsetAt(this.pawn.Rotation), this.pawn.Map, CalmUtils.GetCalmingMessage, Color.green, 3.85f);
                     }
                     pawn.needs.mood.thoughts.memories.TryGainMemory(CalmDefOf.CDGaveCareThought, null);
                     CalmUtils.doStatusMessage(1, pawn, pieceofs);
