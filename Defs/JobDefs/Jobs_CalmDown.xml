@@ -28,5 +28,12 @@
 	<reportString>spending time alone.</reportString>
 	<casualInterruptible>false</casualInterruptible>
   </JobDef>
+
+  <JobDef>
+    <defName>CDGoToSafety</defName>
+    <driverClass>Calm_Down.JobDriver_GoToSafety</driverClass>
+    <reportString>trying to relax.</reportString>
+    <casualInterruptible>true</casualInterruptible>
+  </JobDef>
   
 </Defs>

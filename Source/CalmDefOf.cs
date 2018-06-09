@@ -13,6 +13,7 @@ namespace Calm_Down
     {
         public static JobDef CalmDown = DefDatabase<JobDef>.GetNamed("CDCalmDown");
         public static JobDef SnappingOut = DefDatabase<JobDef>.GetNamed("CDSnappingOut");
+        public static JobDef GoToSafety = DefDatabase<JobDef>.GetNamed("CDGoToSafety");
         public static InteractionDef CalmDownInt = DefDatabase<InteractionDef>.GetNamed("CDCalmDownInt");
         public static ThoughtDef CDGaveCareThought = DefDatabase<ThoughtDef>.GetNamed("CDHelpedFriend");
     }

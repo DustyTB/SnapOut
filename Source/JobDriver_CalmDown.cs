@@ -16,6 +16,7 @@ namespace Calm_Down
         //Formula weight variables. Thanks Mehni and XeoNovaDan, you guys are epic!
         private const TargetIndex pieceofshit = TargetIndex.A; 
         Job recoverjob = new Job(CalmDefOf.SnappingOut);
+        Job gotosafetyjob = new Job(CalmDefOf.GoToSafety);
         #endregion
 
 
@@ -45,14 +46,33 @@ namespace Calm_Down
                         {
                             pieceofs.TryStartAttack(pawn);
                             CalmUtils.doStatusMessage(3, pawn, pieceofs);
-                            pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;
+                            pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;                            
                             return;
 
                         }
 
                         CalmUtils.doStatusMessage(2, pawn, pieceofs);
                         pieceofs.mindState.lastAssignedInteractTime = Find.TickManager.TicksGame;
-                        return;
+                        Room bedroom = pieceofs.ownership.OwnedRoom;
+                        if (bedroom != null)
+                        {
+                            
+                            int srand = Random.Range(0, 100);
+                            CalmUtils.logThis(pieceofs.NameStringShort + " has a bedroom. Chance to get job is.. " + srand);
+                            if (srand <= 65) //65% chance
+                            {
+                                CalmUtils.logThis(pieceofs.NameStringShort + " received gotosafety job!");
+                                pieceofs.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                                gotosafetyjob.playerForced = true;
+                                gotosafetyjob.locomotionUrgency = LocomotionUrgency.Jog;
+                                pieceofs.jobs.StartJob(gotosafetyjob);
+                            }
+                            else
+                            {
+                                CalmUtils.logThis(pieceofs.NameStringShort + " didnt receive gotosafety job!");
+                            }
+                        }
+                            return;
                         #endregion
                     }
                     #region successcondition
@@ -61,6 +81,7 @@ namespace Calm_Down
                         MoteMaker.ThrowText(this.pawn.DrawPos + this.pawn.Drawer.renderer.BaseHeadOffsetAt(this.pawn.Rotation), this.pawn.Map, CalmUtils.GetCalmingMessage, Color.green, 3.85f);
                     }
                     pawn.needs.mood.thoughts.memories.TryGainMemory(CalmDefOf.CDGaveCareThought, null);
+                    pawn.skills.Learn(SkillDefOf.Social, Rand.Range(50,125));
                     CalmUtils.doStatusMessage(1, pawn, pieceofs);
                     if (pieceofs.InAggroMentalState) { pieceofs.MentalState.RecoverFromState(); pieceofs.mindState.mentalStateHandler.TryStartMentalState(MentalStateDefOf.WanderSad); }
                     pieceofs.jobs.EndCurrentJob(JobCondition.InterruptForced);
