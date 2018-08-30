@@ -1,5 +1,0 @@
-D:\Steam Library\steamapps\common\RimWorld\Mods\Calm_Down! - Release\Assemblies\SnapOut.dll
-D:\Steam Library\steamapps\common\RimWorld\Mods\SnapOut\Source\obj\Release\SnapOut.csproj.CoreCompileInputs.cache
-D:\Steam Library\steamapps\common\RimWorld\Mods\SnapOut\Source\obj\Release\SnapOut.csproj.CopyComplete
-D:\Steam Library\steamapps\common\RimWorld\Mods\SnapOut\Source\obj\Release\SnapOut.dll
-D:\Steam Library\steamapps\common\RimWorld\Mods\SnapOut\Assemblies\SnapOut.dll
