@@ -7,13 +7,13 @@ using UnityEngine;
 using Verse;
 using Verse.AI;
 
-namespace Calm_Down
+namespace SnapOut
 {
     class JobDriver_GoToSafety : JobDriver
     {
         //Toil Reservations
         #region toilreservations
-        public override bool TryMakePreToilReservations()
+        public override bool TryMakePreToilReservations(bool errorOnFailed)
         {
             return true;
         }

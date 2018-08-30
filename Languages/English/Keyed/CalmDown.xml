@@ -19,7 +19,7 @@
   <DebugChanceSetting>Output debug and chance messages in console</DebugChanceSetting>
   <NoCathEnabledLabel>Disable Catharsis</NoCathEnabledLabel>
   <Cooldown>Cool down on failed attempt (ticks)</Cooldown>
-  
+
   <CM1>It will be all fine.</CM1>
   <CM2>Don't worry, Ive got your back.</CM2>
   <CM3>Just hold on with me, Ill be with you all the way.</CM3>

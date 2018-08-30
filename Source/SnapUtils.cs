@@ -6,9 +6,9 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Calm_Down
+namespace SnapOut
 {
-    class CalmUtils
+    class SnapUtils
     {
         //In an attempt to de-clutterify and remove excess lines
         private static readonly string FCalm = "FailCalm".Translate();
@@ -20,22 +20,20 @@ namespace Calm_Down
             bool PrisonerDo = false; bool TraderDo = false; bool StateTypeDo = false;
 
             //Aggro check
-            if (subjectee.InAggroMentalState == CDMod.settings.CDAggroCalmEnabled) StateTypeDo = true;
+            if (subjectee.InAggroMentalState == SOMod.settings.SOAggroCalmEnabled) StateTypeDo = true;
             if (!subjectee.InAggroMentalState) StateTypeDo = true;
 
             //Prisoner check
-            if (subjectee.guest.IsPrisoner == CDMod.settings.CDNonFaction) { PrisonerDo = true; TraderDo = true; }
+            if (subjectee.guest.IsPrisoner == SOMod.settings.SONonFaction) { PrisonerDo = true; TraderDo = true; }
 
             //Trader check
-            if (!subjectee.Faction.IsPlayer && !subjectee.Faction.RelationWith(Faction.OfPlayer).hostile)
+            if (!subjectee.Faction.IsPlayer && !subjectee.Faction.HostileTo(Faction.OfPlayer));
             {
-                if (CDMod.settings.CDTraderCalm) { TraderDo = true; PrisonerDo = true; }
+                if (SOMod.settings.SOTraderCalm) { TraderDo = true; PrisonerDo = true; }
             }
 
             //Colonist check
             if (subjectee.Faction == Faction.OfPlayer) { PrisonerDo = true; TraderDo = true; }
-
-            logThis("Can do check for " + subjectee.NameStringShort + " returns.. " + PrisonerDo + TraderDo + StateTypeDo);
             if (PrisonerDo && TraderDo && StateTypeDo) return true;
             return false;
         }
@@ -44,16 +42,14 @@ namespace Calm_Down
         {
             if (doer.health.capacities.CapableOf(PawnCapacityDefOf.Talking) && doer.health.capacities.CapableOf(PawnCapacityDefOf.Hearing) && doer.health.capacities.CapableOf(PawnCapacityDefOf.Moving))
             {
-                logThis("Capability check for " + doer.NameStringShort + " returns true");
                 return true;
             }
-            logThis("Capability check for " + doer.NameStringShort + " returns false");
             return false;
         }
 
         public static void logThis(string message)
         {
-            if (CDMod.settings.CDDebugChances)
+            if (SOMod.settings.SODebug)
             {
                 Log.Message("[SnapOut] " + message);
             }
@@ -61,12 +57,12 @@ namespace Calm_Down
 
         public static float doFormula(Pawn doer, Pawn subjectee)
         {
-            float num = doer.GetStatValue(StatDefOf.DiplomacyPower, true);
+            float num = doer.GetStatValue(StatDefOf.SocialImpact, true);
             int opinion = subjectee.relations.OpinionOf(doer);
-            num = num * CDMod.settings.CDDipWeight + (float)opinion * CDMod.settings.CDOpnWeight; //Formula
-            if (CDMod.settings.CDOpnOnly)
+            num = num * SOMod.settings.SODipWeight + (float)opinion * SOMod.settings.SOOpnWeight; //Formula
+            if (SOMod.settings.SOOpnOnly)
             {
-                num = (float)opinion * CDMod.settings.CDOOpnWeight;
+                num = (float)opinion * SOMod.settings.SOOOpnWeight;
             }
             num = Mathf.Clamp01(num);
             return num;
@@ -79,22 +75,22 @@ namespace Calm_Down
                 case 1: //Success
                     Messages.Message(string.Format(SCalm, new object[]
                     {
-                                    doer.NameStringShort,
-                                    subjectee.NameStringShort,
+                                    doer.Name.ToStringShort,
+                                    subjectee.Name.ToStringShort,
                     }), MessageTypeDefOf.TaskCompletion);
                     break;
                 case 2: //Failure
                     Messages.Message(string.Format(FCalm, new object[]
                                 {
-                                    doer.NameStringShort,
-                                    subjectee.NameStringShort,
+                                    doer.Name.ToStringShort,
+                                    subjectee.Name.ToStringShort,
                                 }), MessageTypeDefOf.TaskCompletion);
                     break;
                 case 3: //Critical Failure
                     Messages.Message(string.Format(AFCalm, new object[]
                                     {
-                                    doer.NameStringShort,
-                                    subjectee.NameStringShort,
+                                    doer.Name.ToStringShort,
+                                    subjectee.Name.ToStringShort,
                                     }), MessageTypeDefOf.TaskCompletion);
                     break;
             }
