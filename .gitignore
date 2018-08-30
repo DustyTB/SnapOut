@@ -1,8 +1,0 @@
-.vs
-*.cache
-Source/obj
-/Assemblies/Calm_Down!.dll
-/About/About.xml
-*.csproj.user
-/About/About-Debug.xml
-/About/About-Release.xml
