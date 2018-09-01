@@ -22,14 +22,23 @@ namespace SnapOut
             //Aggro check
             if (subjectee.InAggroMentalState == SOMod.settings.SOAggroCalmEnabled) StateTypeDo = true;
             if (!subjectee.InAggroMentalState) StateTypeDo = true;
+            bool friendly = true;
+            
+            if (subjectee.Faction.RelationKindWith(Faction.OfPlayer) == FactionRelationKind.Hostile)
+            {
+                friendly = false;
+            }
 
             //Prisoner check
             if (subjectee.guest.IsPrisoner == SOMod.settings.SONonFaction) { PrisonerDo = true; TraderDo = true; }
 
             //Trader check
-            if (!subjectee.Faction.IsPlayer && !subjectee.Faction.HostileTo(Faction.OfPlayer));
+            if (!subjectee.Faction.IsPlayer);
             {
-                if (SOMod.settings.SOTraderCalm) { TraderDo = true; PrisonerDo = true; }
+                if (friendly)
+                {
+                    if (SOMod.settings.SOTraderCalm) { TraderDo = true; PrisonerDo = true; }
+                }
             }
 
             //Colonist check
