@@ -8,12 +8,12 @@
     <initiatorXpGainAmount>30</initiatorXpGainAmount>
     <logRulesInitiator>
       <rulesStrings>
-        <li>logentry->Tried to calm [other_nameShortIndef] down.</li>
+        <li>r_logentry->Tried to calm [RECIPIENT_nameDef] down.</li>
       </rulesStrings>
     </logRulesInitiator>
     <logRulesRecipient>
       <rulesStrings>
-        <li>logentry->[other_nameShortIndef] tried to calm me down.</li>
+        <li>r_logentry->[INITIATOR_nameDef] tried to calm me down.</li>
       </rulesStrings>
     </logRulesRecipient>
   </InteractionDef>
