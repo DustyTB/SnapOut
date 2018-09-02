@@ -24,10 +24,14 @@ namespace SnapOut
             if (!subjectee.InAggroMentalState) StateTypeDo = true;
             bool friendly = true;
             
-            if (subjectee.Faction.RelationKindWith(Faction.OfPlayer) == FactionRelationKind.Hostile)
+            if (!subjectee.Faction.IsPlayer)
             {
-                friendly = false;
+                if (subjectee.Faction.RelationKindWith(Faction.OfPlayer) == FactionRelationKind.Hostile)
+                {
+                    friendly = false;
+                }
             }
+            
 
             //Prisoner check
             if (subjectee.guest.IsPrisoner == SOMod.settings.SONonFaction) { PrisonerDo = true; TraderDo = true; }
