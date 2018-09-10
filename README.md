@@ -41,9 +41,6 @@ Thanks to BaRKy for reviewing the mod.
 
 # Rate the mod
 
-If you liked the mod, Id appriciate it a lot if you rated it on Steam (and perhaps favorite it if you REALLY like it!)
-
-![](https://steamusercontent-a.akamaihd.net/ugc/269465021246012418/177552C120085204130566E3C02C4E749C53B49C)
-
+If you liked the mod, Id appreciate it a lot if you rated it on Steam (and perhaps favorite it if you REALLY like it!)
 
 
