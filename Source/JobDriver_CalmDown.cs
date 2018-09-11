@@ -126,8 +126,8 @@ namespace SnapOut
             yield return Toils_Interpersonal.GotoInteractablePosition(pieceofshit);
             yield return Toils_General.Do(delegate
             {
-                             
-                
+
+                SnapUtils.modCompatDoer(pieceofs.MentalState.def.ToString(), pawn, pieceofs);
                 pieceofs.rotationTracker.FaceCell(pawn.PositionHeld);
                 if (pieceofs.InAggroMentalState)
                 {

@@ -14,6 +14,7 @@ namespace SnapOut
         private static readonly string FCalm = "FailCalm".Translate();
         private static readonly string SCalm = "SuccessCalm".Translate();
         private static readonly string AFCalm = "AggroFailCalm".Translate();
+        private static List<string> incompatdef = new List<string>(new string[] { "RunWild", "PanicFlee" }); //Def names of incompatible mental states
 
         public static bool canDo(Pawn subjectee)
         {
@@ -58,6 +59,22 @@ namespace SnapOut
                 return true;
             }
             return false;
+        }
+
+        public static bool breakCompatCheck(string defname)
+        {
+            if(incompatdef.Any(s => defname.Contains(s)))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static void modCompatDoer(string defname, Pawn doer, Pawn subjectee)
+        {
+            //Psychology compat.
+            if (defname.Contains("HuntingTrip")) { subjectee.stances.stunner.StunFor(SOMod.settings.SOCalmDuration, doer); }
+
         }
 
         public static void logThis(string message)
