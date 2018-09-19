@@ -1,4 +1,4 @@
-# Reupload, please check the new repo as DustyTB has lost access to his original account
+# Reuploaded in another repository, please check the new repo as DustyTB has lost access to his original account
 
 [New Repository](https://github.com/Weilbyte/SnapOut)
 
